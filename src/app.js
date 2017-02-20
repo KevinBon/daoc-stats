@@ -7,31 +7,32 @@ const commandLineArgs = require('command-line-args');
 const optionDefinitions = [
   { name: 'debug', type: Boolean, defaultValue: false }, // --debug
   { name: 'src', type: String, defaultValue: 'chat.log' }, // --src chat.log
+  { name: 'autoUpdate', type: Number, defaultValue: 5000 }, // --autoUpdate 5000
 ];
 const options = commandLineArgs(optionDefinitions);
 const Parser = require('./parser.js');
 const MiddleWare = require('./middleWare.js');
-const ObsExperience = require('./observers/experience');
-const StatExperience = require('./stats/experience');
-
-var obsExperience = new ObsExperience();
+const obsExperience = require('./plugins/experience.observer.js');
+const statExperience = require('./plugins/experience.stat.js');
 
 var parser = new Parser(options.src, {
   debug: options.debug,
+  autoUpdate: options.autoUpdate,
 });
 var middleWare = new MiddleWare({
   debug: options.debug,
   observers: [
-    new ObsExperience(),
+    obsExperience,
   ],
   stats: [
-    new StatExperience(),
+    statExperience,
   ]
 });
 
 parser.init();
 parser.start();
 parser.on('data', middleWare.processData.bind(middleWare));
+parser.on('update', middleWare.updateStats.bind(middleWare));
 
 // CTRL + C
 rl.on('SIGINT', () => {

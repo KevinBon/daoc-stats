@@ -21,20 +21,22 @@ var MiddleWare = class MiddleWare {
     }
     return true;
   }
-  updateStats(observersData) {
-    observersData.forEach((observerData) => {
-      this.stats.forEach((stat) => {
-        if (stat.isTriggered(observerData)) {
-          stat.updateData(observerData);
-        } else {
-          console.log('nop', observerData);
-        }
-      });
-    });
+  updateStats(observersData = []) {
     if (!this.debug) {
       clear();
     }
     this.stats.forEach((stat) => {
+      if (!observersData.length && stat.isAutoUpdatable()) {
+        stat.updateData();
+      } else {
+        observersData.forEach((observerData) => {
+          if (stat.isTriggered(observerData)) {
+            stat.updateData(observerData);
+          } else {
+            console.log('nop', observerData);
+          }
+        });
+      }
       return _.each(stat.getValue(), (val, key) => {
         console.log(`${key}: ${val}`);
       });

@@ -5,11 +5,13 @@ const os = require('os');
 const EventEmitter = require('events');
 
 var Parser = class Parser extends EventEmitter {
-  constructor(filePath, { debug: debug } = { debug: false }) {
+  constructor(filePath, { debug: debug, autoUpdate: autoUpdate } = { debug: false, autoUpdate: null }) {
     super();
     this.filePath = filePath;
     this.debug = debug;
+    this.autoUpdate = autoUpdate;
     this.watcher;
+    this.autoUpdateTimerFn;
   }
   _initCursorPosFromFile() {
     fs.readFile(this.filePath, 'utf8', (err, data) => {
@@ -35,8 +37,25 @@ var Parser = class Parser extends EventEmitter {
     this._debug('-- Initialized --');
     return this;
   }
+  stopAutoUpdateTimer() {
+    this._debug('autoUpdate:stop');
+    clearTimeout(this.autoUpdateTimerFn);
+    return this;
+  }
+  startAutoUpdateTimer() {
+    if (!!this.autoUpdate) {
+      this._debug(`autoUpdate:start ${this.autoUpdate}ms`);
+      this.autoUpdateTimerFn = setTimeout(() => {
+        this._debug('emit:update');
+        this.emit('update');
+        this.startAutoUpdateTimer();
+      }, this.autoUpdate);
+    }
+    return this;
+  }
   start() {
     this._debug('-- Starting');
+    this.startAutoUpdateTimer();
     this.watcher.on('change', (path, stats) => {
       // Nothing changed
       if (!stats || !stats.size || this.cursorPos === stats.size) {
@@ -58,6 +77,7 @@ var Parser = class Parser extends EventEmitter {
   }
   close() {
     this._debug('-- Closing');
+    this.stopAutoUpdateTimer();
     this.watcher.close();
     this._debug('-- Closed --');
     return this;
