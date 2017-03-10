@@ -13,7 +13,18 @@ var Parser = class Parser extends EventEmitter {
     this.watcher;
     this.autoUpdateTimerFn;
   }
+  _isFileExist() {
+    const exist = fs.existsSync(this.filePath);
+    if (!exist) {
+      this._debug(`file doesn\'t exist ${this.filePath}`);
+    }
+    return exist;
+  }
   _initCursorPosFromFile() {
+    if (!this._isFileExist()) {
+      this._debug(`read file aborted`);
+      return this;
+    }
     fs.readFile(this.filePath, 'utf8', (err, data) => {
       this.cursorPos = data.length;
       this._debug(`Init at pos ${this.cursorPos}`);
@@ -21,7 +32,8 @@ var Parser = class Parser extends EventEmitter {
     return this;
   }
   _initWatcher() {
-    this.watcher = chokidar.watch(this.filePath);
+      this.watcher = chokidar.watch(this.filePath);
+      this.watcher.on('error', error => this._debug(`Watcher error: ${error}`));
     return this;
   }
   _debug(msg, type = 'log') {
@@ -65,7 +77,7 @@ var Parser = class Parser extends EventEmitter {
       var from = this.cursorPos === 0 ? 0 : this.cursorPos;
       var to = this.cursorPos = stats.size;
       this._debug(`from ${from} to ${to}`);
-      fs.createReadStream('chat.log', { start: from, end: to }).on('data', (chunk) => {
+      fs.createReadStream(this.filePath, { start: from, end: to }).on('data', (chunk) => {
         var txt = chunk.toString('utf8');
         txt.split(os.EOL).forEach((text) => {
           this.emit('data', text);

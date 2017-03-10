@@ -14,6 +14,8 @@ const Parser = require('./parser.js');
 const MiddleWare = require('./middleWare.js');
 const obsExperience = require('./plugins/experience.observer.js');
 const statExperience = require('./plugins/experience.stat.js');
+const obsIteration = require('./plugins/iteration.observer.js');
+const statIteration = require('./plugins/iteration.stat.js');
 
 var parser = new Parser(options.src, {
   debug: options.debug,
@@ -23,9 +25,11 @@ var middleWare = new MiddleWare({
   debug: options.debug,
   observers: [
     obsExperience,
+    obsIteration,
   ],
   stats: [
     statExperience,
+    statIteration,
   ]
 });
 

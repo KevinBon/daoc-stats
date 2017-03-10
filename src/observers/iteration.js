@@ -1,14 +1,15 @@
 const AbstractObserver = require('./abstract.observer.js');
 
-var ObsExperience = class ObsExperience extends AbstractObserver {
+var ObsIteration = class ObsExperience extends AbstractObserver {
   constructor(arg = {}) {
-    arg.name = 'experience';
-    arg.validator = /experience points/;
+    arg.name = 'iteration';
+    arg.validator = /./;
+    this._count = 0;
     super(arg);
   }
   getData(explodedData, data) {
     return {
-      xp: parseInt(explodedData[3].replace(/,/g, ''), 10)
+      lines: ++this._count,
     };
   }
 }

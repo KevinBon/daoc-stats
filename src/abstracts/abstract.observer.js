@@ -37,6 +37,9 @@ var AbstractObserver = class AbstractObserver {
       data: this.getData(explodedData, data),
     };
   }
+  getData(explodedData, data) {
+    return {};
+  }
 }
 
 module.exports = AbstractObserver;
