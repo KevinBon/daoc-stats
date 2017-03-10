@@ -33,7 +33,8 @@ var MiddleWare = class MiddleWare {
           if (stat.isTriggered(observerData)) {
             stat.updateData(observerData);
           } else {
-            console.log('nop', observerData);
+            this._debug('nop');
+            // console.log('nop', observerData);
           }
         });
       }

@@ -57,33 +57,47 @@ var Parser = class Parser extends EventEmitter {
   startAutoUpdateTimer() {
     if (!!this.autoUpdate) {
       this._debug(`autoUpdate:start ${this.autoUpdate}ms`);
-      this.autoUpdateTimerFn = setTimeout(() => {
-        this._debug('emit:update');
-        this.emit('update');
-        this.startAutoUpdateTimer();
-      }, this.autoUpdate);
+      fs.readFile(this.filePath, 'utf8', (err, data) => {
+        if (this.cursorPos === data.length) {
+          this._debug('file change skip');
+        } else {
+          var from = this.cursorPos === 0 ? 0 : this.cursorPos;
+          var to = this.cursorPos = data.length;
+          this.readFileFromTo(from, to);
+        }
+        this.autoUpdateTimerFn = setTimeout(() => {
+          this._debug('emit:update');
+          this.emit('update');
+          this.startAutoUpdateTimer();
+        }, this.autoUpdate);
+      });
     }
+    return this;
+  }
+  readFileFromTo(from, to) {
+    this._debug(`from ${from} to ${to}`);
+    fs.createReadStream(this.filePath, { start: from, end: to }).on('data', (chunk) => {
+      var txt = chunk.toString('utf8');
+      txt.split(os.EOL).forEach((text) => {
+        this.emit('data', text);
+      });
+    });
     return this;
   }
   start() {
     this._debug('-- Starting');
     this.startAutoUpdateTimer();
-    this.watcher.on('change', (path, stats) => {
-      // Nothing changed
-      if (!stats || !stats.size || this.cursorPos === stats.size) {
-        this._debug('file change skip');
-        return;
-      }
-      var from = this.cursorPos === 0 ? 0 : this.cursorPos;
-      var to = this.cursorPos = stats.size;
-      this._debug(`from ${from} to ${to}`);
-      fs.createReadStream(this.filePath, { start: from, end: to }).on('data', (chunk) => {
-        var txt = chunk.toString('utf8');
-        txt.split(os.EOL).forEach((text) => {
-          this.emit('data', text);
-        });
-      });
-    });
+    // --- Old way
+    // this.watcher.on('change', (path, stats) => {
+    //   // Nothing changed
+    //   if (!stats || !stats.size || this.cursorPos === stats.size) {
+    //     this._debug('file change skip');
+    //     return;
+    //   }
+    //   var from = this.cursorPos === 0 ? 0 : this.cursorPos;
+    //   var to = this.cursorPos = stats.size;
+    //   this.readFileFromTo(from, to);
+    // });
     this._debug('-- Started --');
     return this;
   }
