@@ -14,6 +14,21 @@ var StatExperience = class StatExperience extends AbstractStat {
     this.elapsedSinceStartMinutes = 0; // elapsedSinceStart Minutes
     this.elapsedSinceStartSecondes = 0; // elapsedSinceStart Secondes
   }
+  formatNumber(val) {
+    var lgth = Number(val).toString().length;
+    let dividedBy = 1;
+    let unitTxt = '';
+    if (lgth >= 7 && lgth < 9) {
+      dividedBy = 1000000;
+      unitTxt = 'Millions';
+    } else if (lgth >= 9) {
+      dividedBy = 1000000000;
+      unitTxt = 'Billiards';
+    } else {
+      return val;;
+    }
+    return Number(val / dividedBy).toFixed(2) + ' ' + unitTxt;
+  }
   getXPPerHour() {
     // Start at the first kill
     if (this.kill === 0) {
@@ -34,7 +49,8 @@ var StatExperience = class StatExperience extends AbstractStat {
     this.elapsedSinceStartSecondes = Math.floor(secDiff / 1000);
 
     var alors = humanReadable.hours + ((humanReadable.minutes / 60));
-    return Math.floor(Number(this.total / alors));
+    var xpPerHour = Math.floor(Number(this.total / alors));
+    return xpPerHour;
   }
   updateData(newData = null) {
     if (newData !== null) {
@@ -61,10 +77,10 @@ var StatExperience = class StatExperience extends AbstractStat {
       kill: this.kill,
       start: this.start,
       end: this.end,
-      total: this.total,
-      min: this.min,
-      max: this.max,
-      xpPerHour: this.xpPerHour,
+      total: this.formatNumber(this.total),
+      min: this.formatNumber(this.min),
+      max: this.formatNumber(this.max),
+      xpPerHour: this.formatNumber(this.xpPerHour),
       elapsedSinceStartHour: this.elapsedSinceStartHour,
       elapsedSinceStartMinutes: this.elapsedSinceStartMinutes,
       elapsedSinceStartSecondes: this.elapsedSinceStartSecondes,
@@ -73,5 +89,6 @@ var StatExperience = class StatExperience extends AbstractStat {
 }
 
 module.exports = new StatExperience({
-  observersTriggerBy: 'experience'
+  label: 'experience',
+  observersTriggerBy: 'experience',
 });

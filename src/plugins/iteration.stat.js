@@ -17,5 +17,6 @@ var StatIteration = class StatIteration extends AbstractStat {
 }
 
 module.exports = new StatIteration({
+  label: 'iteration',
   observersTriggerBy: 'iteration'
 });

@@ -1,9 +1,11 @@
 const chalk = require('chalk');
 const _ = require('lodash');
 const clear = require('clear');
+const EventEmitter = require('events');
 
-var MiddleWare = class MiddleWare {
+var MiddleWare = class Parser extends EventEmitter {
   constructor({ debug: debug, observers: observers, stats: stats } = { debug: false, observers: [], stats: [] }) {
+    super();
     this.debug = debug;
     this.observers = observers;
     this.stats = stats;
@@ -38,7 +40,10 @@ var MiddleWare = class MiddleWare {
           }
         });
       }
-      return _.each(stat.getValue(), (val, key) => {
+      var data = stat.getValue();
+      this.emit('data', data);
+      this.emit(`data:${stat.getLabel()}`, data);
+      return _.each(data, (val, key) => {
         console.log(`${key}: ${val}`);
       });
     });
