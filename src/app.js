@@ -1,25 +1,26 @@
-const readline = require('readline');
-const rl = readline.createInterface({
+import { createInterface } from 'node:readline';
+const rl = createInterface({
   input: process.stdin,
   output: process.stdout
 });
-const commandLineArgs = require('command-line-args');
+import commandLineArgs from 'command-line-args';
 const optionDefinitions = [
   { name: 'debug', type: Boolean, defaultValue: false }, // --debug
   { name: 'src', type: String, defaultValue: 'chat.log' }, // --src chat.log
   { name: 'autoUpdate', type: Number, defaultValue: 5000 }, // --autoUpdate 5000
 ];
 const options = commandLineArgs(optionDefinitions);
-const Parser = require('./parser.js');
-const MiddleWare = require('./middleWare.js');
-const obsExperience = require('./plugins/experience.observer.js');
-const statExperience = require('./plugins/experience.stat.js');
-const obsIteration = require('./plugins/iteration.observer.js');
-const statIteration = require('./plugins/iteration.stat.js');
+import Parser from './parser.js';
+import MiddleWare from './middleWare.js';
+import obsExperience from './plugins/experience.observer.js';
+import statExperience from './plugins/experience.stat.js';
+import obsIteration from './plugins/iteration.observer.js';
+import statIteration from './plugins/iteration.stat.js';
 
 var parser = new Parser(options.src, {
   debug: options.debug,
   autoUpdate: options.autoUpdate,
+  test: true
 });
 var middleWare = new MiddleWare({
   debug: options.debug,
@@ -35,7 +36,10 @@ var middleWare = new MiddleWare({
 
 parser.init();
 parser.start();
-parser.on('data', middleWare.processData.bind(middleWare));
+parser.on('data', (text) => {
+  console.log(text)
+});
+// parser.on('data', middleWare.processData.bind(middleWare));
 parser.on('update', middleWare.updateStats.bind(middleWare));
 
 // CTRL + C

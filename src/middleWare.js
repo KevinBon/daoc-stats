@@ -1,6 +1,5 @@
-const chalk = require('chalk');
-const _ = require('lodash');
-const clear = require('clear');
+import chalk from 'chalk';
+import clear from 'clear';
 
 var MiddleWare = class MiddleWare {
   constructor({ debug: debug, observers: observers, stats: stats } = { debug: false, observers: [], stats: [] }) {
@@ -38,7 +37,7 @@ var MiddleWare = class MiddleWare {
           }
         });
       }
-      return _.each(stat.getValue(), (val, key) => {
+      return Array.from(stat.getValue()).forEach((val, key) => {
         console.log(`${key}: ${val}`);
       });
     });
@@ -78,4 +77,4 @@ var MiddleWare = class MiddleWare {
   }
 }
 
-module.exports = MiddleWare;
+export default MiddleWare;

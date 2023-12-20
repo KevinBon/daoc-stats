@@ -1,5 +1,3 @@
-const chalk = require('chalk');
-const _ = require('lodash');
 
 const defaultConstParam = {
   debug: false,
@@ -29,7 +27,7 @@ var AbstractStat = class AbstractStat {
   }
   afterConstructor() {}
   isTriggered(observer) {
-    return _.includes(this.observersTriggerBy, observer.name);
+    return this.observersTriggerBy.includes(observer.name);
   } // Handle data update without data
   isAutoUpdatable() {
     return this.autoUpdatable;
@@ -47,11 +45,11 @@ var AbstractStat = class AbstractStat {
   }
   getValue() {
     var val = this._getValue();
-    if (this.pick && this.pick.length) {
-      val = _.pick(val, this.pick);
-    }
+    // if (this.pick && this.pick.length) {
+    //   val = _pick(val, this.pick);
+    // }
     return val;
   }
 }
 
-module.exports = AbstractStat;
+export default AbstractStat;

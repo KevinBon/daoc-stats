@@ -1,4 +1,4 @@
-const AbstractStat = require('../abstracts/abstract.stat.js');
+import AbstractStat from '../abstracts/abstract.stat.js';
 
 var StatIteration = class StatIteration extends AbstractStat {
   afterConstructor() {
@@ -16,6 +16,6 @@ var StatIteration = class StatIteration extends AbstractStat {
   }
 }
 
-module.exports = new StatIteration({
+export default new StatIteration({
   observersTriggerBy: 'iteration'
 });

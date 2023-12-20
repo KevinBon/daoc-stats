@@ -1,4 +1,4 @@
-const AbstractStat = require('../abstracts/abstract.stat.js');
+import AbstractStat from '../abstracts/abstract.stat.js';
 
 var StatExperience = class StatExperience extends AbstractStat {
   afterConstructor() {
@@ -72,6 +72,6 @@ var StatExperience = class StatExperience extends AbstractStat {
   }
 }
 
-module.exports = new StatExperience({
+export default new StatExperience({
   observersTriggerBy: 'experience'
 });

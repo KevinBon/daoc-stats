@@ -1,20 +1,22 @@
-const fs = require('fs');
-const chalk = require('chalk');
-const chokidar = require('chokidar');
-const os = require('os');
-const EventEmitter = require('events');
+import { existsSync, readFile, createReadStream } from 'node:fs';
+import chalk from 'chalk';
+import { watch } from 'chokidar';
+import { EOL } from 'node:os';
+import EventEmitter from 'node:events';
 
 var Parser = class Parser extends EventEmitter {
-  constructor(filePath, { debug: debug, autoUpdate: autoUpdate } = { debug: false, autoUpdate: null }) {
+  constructor(filePath, { debug: debug, autoUpdate: autoUpdate, test } = { test: false, debug: false, autoUpdate: null }) {
     super();
     this.filePath = filePath;
     this.debug = debug;
     this.autoUpdate = autoUpdate;
     this.watcher;
     this.autoUpdateTimerFn;
+    // Start from the beginning
+    this.test = test;
   }
   _isFileExist() {
-    const exist = fs.existsSync(this.filePath);
+    const exist = existsSync(this.filePath);
     if (!exist) {
       this._debug(`file doesn\'t exist ${this.filePath}`);
     }
@@ -25,14 +27,14 @@ var Parser = class Parser extends EventEmitter {
       this._debug(`read file aborted`);
       return this;
     }
-    fs.readFile(this.filePath, 'utf8', (err, data) => {
-      this.cursorPos = data.length;
+    readFile(this.filePath, 'utf8', (err, data) => {
+      this.cursorPos = this.test ? 0 : data.length;
       this._debug(`Init at pos ${this.cursorPos}`);
     });
     return this;
   }
   _initWatcher() {
-      this.watcher = chokidar.watch(this.filePath);
+      this.watcher = watch(this.filePath);
       this.watcher.on('error', error => this._debug(`Watcher error: ${error}`));
     return this;
   }
@@ -57,7 +59,7 @@ var Parser = class Parser extends EventEmitter {
   startAutoUpdateTimer() {
     if (!!this.autoUpdate) {
       this._debug(`autoUpdate:start ${this.autoUpdate}ms`);
-      fs.readFile(this.filePath, 'utf8', (err, data) => {
+      readFile(this.filePath, 'utf8', (err, data) => {
         if (this.cursorPos === data.length) {
           this._debug('file change skip');
         } else {
@@ -76,9 +78,9 @@ var Parser = class Parser extends EventEmitter {
   }
   readFileFromTo(from, to) {
     this._debug(`from ${from} to ${to}`);
-    fs.createReadStream(this.filePath, { start: from, end: to }).on('data', (chunk) => {
+    createReadStream(this.filePath, { start: from, end: to }).on('data', (chunk) => {
       var txt = chunk.toString('utf8');
-      txt.split(os.EOL).forEach((text) => {
+      txt.split(EOL).forEach((text) => {
         this.emit('data', text);
       });
     });
@@ -110,4 +112,4 @@ var Parser = class Parser extends EventEmitter {
   }
 };
 
-module.exports = Parser;
+export default Parser;

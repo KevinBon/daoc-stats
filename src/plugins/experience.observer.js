@@ -1,5 +1,4 @@
-const chalk = require('chalk');
-const AbstractObserver = require('../abstracts/abstract.observer.js');
+import AbstractObserver from '../abstracts/abstract.observer.js';
 
 var ObsExperience = class ObsExperience extends AbstractObserver {
   getData(explodedData, data) {
@@ -9,7 +8,7 @@ var ObsExperience = class ObsExperience extends AbstractObserver {
   }
 }
 
-module.exports = new ObsExperience({
+export default new ObsExperience({
   name: 'experience',
   validator: /experience points/,
 });

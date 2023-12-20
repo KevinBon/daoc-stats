@@ -1,4 +1,3 @@
-const chalk = require('chalk');
 
 const defaultConstParam = {
   debug: false,
@@ -42,4 +41,4 @@ var AbstractObserver = class AbstractObserver {
   }
 }
 
-module.exports = AbstractObserver;
+export default AbstractObserver;
