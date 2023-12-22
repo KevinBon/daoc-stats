@@ -1,3 +1,6 @@
+import { Client, GatewayIntentBits } from 'discord.js';
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
 import { createInterface } from 'node:readline';
 const rl = createInterface({
   input: process.stdin,
