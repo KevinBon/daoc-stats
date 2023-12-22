@@ -1,12 +1,19 @@
 import { Client, GatewayIntentBits } from 'discord.js';
+import { createInterface } from 'node:readline';
+import commandLineArgs from 'command-line-args';
+import Parser from './parser.js';
+import MiddleWare from './middleWare.js';
+import obsExperience from './plugins/experience.observer.js';
+import statExperience from './plugins/experience.stat.js';
+import obsIteration from './plugins/iteration.observer.js';
+import statIteration from './plugins/iteration.stat.js';
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-import { createInterface } from 'node:readline';
 const rl = createInterface({
   input: process.stdin,
   output: process.stdout
 });
-import commandLineArgs from 'command-line-args';
 const optionDefinitions = [
   { name: 'debug', type: Boolean, defaultValue: false }, // --debug
   { name: 'test', type: Boolean, defaultValue: false }, // --test
@@ -14,12 +21,6 @@ const optionDefinitions = [
   { name: 'autoUpdate', type: Number, defaultValue: 5000 }, // --autoUpdate 5000
 ];
 const options = commandLineArgs(optionDefinitions);
-import Parser from './parser.js';
-import MiddleWare from './middleWare.js';
-import obsExperience from './plugins/experience.observer.js';
-import statExperience from './plugins/experience.stat.js';
-import obsIteration from './plugins/iteration.observer.js';
-import statIteration from './plugins/iteration.stat.js';
 
 var parser = new Parser(options.src, {
   debug: options.debug,
