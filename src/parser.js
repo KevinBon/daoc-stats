@@ -20,7 +20,7 @@ var Parser = class Parser extends EventEmitter {
     if (!exist) {
       this._debug(`file doesn\'t exist ${this.filePath}`);
     }
-    return exist;
+    return exist
   }
   _initCursorPosFromFile() {
     if (!this._isFileExist()) {
