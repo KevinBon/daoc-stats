@@ -4,18 +4,20 @@
 
 ## Install
 
-1. Clone the repository.
-2. `pnpm install`
-
-Create an `.env` file at the root of the project with as following:
+1. Download https://pnpm.io/
+2. Clone the repository.
+3. `pnpm install`
+4. Create an `.env` file at the root of the project with as following:
 
 ```json
 DISCORD_TOKEN=YOUR_REAL_TOKEN
 ```
 
-## Basic Usage
+## How to use
 
-`node index.js --src "C:\\Users\\BobMoutarde\\Documents\\Electronic Arts\\Dark Age of Camelot\\chat.log"`
+1. Clear your `chat.log` file
+2. Login to DAOC, and type `/chatlog`
+3. Run the program: `pnpm exec node .\index.js --debug --src "C:\Users\yourSession\OneDrive\Documents\Electronic Arts\Dark Age of Camelot\chat.log"`
 
 ## Params
 
