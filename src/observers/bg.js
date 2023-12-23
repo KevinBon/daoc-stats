@@ -1,4 +1,4 @@
-import { sendMessage } from "../services/discord";
+import { sendMessage } from "../services/discord.js";
 
 const predicates = [
   /**
