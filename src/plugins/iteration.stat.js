@@ -1,4 +1,4 @@
-import AbstractStat from '../abstracts/abstract.stat.js';
+import AbstractStat from "../abstracts/abstract.stat.js";
 
 var StatIteration = class StatIteration extends AbstractStat {
   afterConstructor() {
@@ -14,8 +14,8 @@ var StatIteration = class StatIteration extends AbstractStat {
       lines: this.count,
     };
   }
-}
+};
 
 export default new StatIteration({
-  observersTriggerBy: 'iteration'
+  observersTriggerBy: "iteration",
 });

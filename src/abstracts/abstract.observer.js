@@ -1,12 +1,15 @@
-
 const defaultConstParam = {
   debug: false,
   validator: null,
-  name: '',
+  name: "",
 };
 
 var AbstractObserver = class AbstractObserver {
-  constructor({ debug: debug, validator: validator, name: name } = defaultConstParam) {
+  constructor({
+    debug: debug,
+    validator: validator,
+    name: name,
+  } = defaultConstParam) {
     this.debug = debug;
     this.validator = validator;
     this.name = name;
@@ -18,7 +21,7 @@ var AbstractObserver = class AbstractObserver {
   }
   getTimeData(explodedData) {
     // Time
-    const timeData = explodedData[0].replace(/\]|\[/g, '').split(':');
+    const timeData = explodedData[0].replace(/\]|\[/g, "").split(":");
     let time = new Date();
     time.setHours(parseInt(timeData[0], 10));
     time.setMinutes(parseInt(timeData[1], 10));
@@ -26,7 +29,7 @@ var AbstractObserver = class AbstractObserver {
     return time;
   }
   getExplodedData(data) {
-    return data.split(' ');
+    return data.split(" ");
   }
   getFullData(data) {
     let explodedData = this.getExplodedData(data);
@@ -39,6 +42,6 @@ var AbstractObserver = class AbstractObserver {
   getData(explodedData, data) {
     return {};
   }
-}
+};
 
 export default AbstractObserver;

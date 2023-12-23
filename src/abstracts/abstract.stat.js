@@ -1,7 +1,6 @@
-
 const defaultConstParam = {
   debug: false,
-  label: '',
+  label: "",
   value: 0,
   observersTriggerBy: [],
   autoUpdatable: true,
@@ -34,7 +33,7 @@ var AbstractStat = class AbstractStat {
   }
   // abstract
   updateData(newData) {
-    ('updateData must be declared');
+    ("updateData must be declared");
   }
   getLabel() {
     return this.label;
@@ -50,6 +49,6 @@ var AbstractStat = class AbstractStat {
     // }
     return val;
   }
-}
+};
 
 export default AbstractStat;

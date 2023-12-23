@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:write": "prettier . --write",
+    "prepare": "husky install"
   },
   "type": "module",
   "author": "",
@@ -18,5 +20,13 @@
     "dotenv": "^16.3.1",
     "lodash": "^4.17.21",
     "node-interval-stream": "^1.0.1"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "3.1.1"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }

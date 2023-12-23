@@ -1,4 +1,4 @@
-import AbstractStat from '../abstracts/abstract.stat.js';
+import AbstractStat from "../abstracts/abstract.stat.js";
 
 var StatExperience = class StatExperience extends AbstractStat {
   afterConstructor() {
@@ -20,20 +20,20 @@ var StatExperience = class StatExperience extends AbstractStat {
       return 0;
     }
 
-    var timeStart = this.start && this.start.getTime() || +new Date();
+    var timeStart = (this.start && this.start.getTime()) || +new Date();
     var timeEnd = +new Date();
-    var hourDiff =  timeEnd - timeStart; //in ms
+    var hourDiff = timeEnd - timeStart; //in ms
     var secDiff = hourDiff / 1000; // in s
     var minDiff = hourDiff / 60 / 1000; //in minutes
     var hDiff = hourDiff / 3600 / 1000; //in hours
-    var humanReadable = {}
+    var humanReadable = {};
     humanReadable.hours = Math.floor(hDiff);
     humanReadable.minutes = Math.floor(minDiff - 60 * humanReadable.hours);
     this.elapsedSinceStartHour = humanReadable.hours;
     this.elapsedSinceStartMinutes = humanReadable.minutes;
     this.elapsedSinceStartSecondes = Math.floor(secDiff / 1000);
 
-    var alors = humanReadable.hours + ((humanReadable.minutes / 60));
+    var alors = humanReadable.hours + humanReadable.minutes / 60;
     return Math.floor(Number(this.total / alors));
   }
   updateData(newData = null) {
@@ -70,8 +70,8 @@ var StatExperience = class StatExperience extends AbstractStat {
       elapsedSinceStartSecondes: this.elapsedSinceStartSecondes,
     };
   }
-}
+};
 
 export default new StatExperience({
-  observersTriggerBy: 'experience'
+  observersTriggerBy: "experience",
 });

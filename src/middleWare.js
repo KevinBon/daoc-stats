@@ -1,13 +1,19 @@
-import chalk from 'chalk';
-import clear from 'clear';
+import chalk from "chalk";
+import clear from "clear";
 
 var MiddleWare = class MiddleWare {
-  constructor({ debug: debug, observers: observers, stats: stats } = { debug: false, observers: [], stats: [] }) {
+  constructor(
+    { debug: debug, observers: observers, stats: stats } = {
+      debug: false,
+      observers: [],
+      stats: [],
+    },
+  ) {
     this.debug = debug;
     this.observers = observers;
     this.stats = stats;
   }
-  _debug(msg, type = 'log') {
+  _debug(msg, type = "log") {
     if (this.debug) {
       console[type](chalk.blue(`MiddleWare: ${msg}`));
     }
@@ -32,7 +38,7 @@ var MiddleWare = class MiddleWare {
           if (stat.isTriggered(observerData)) {
             stat.updateData(observerData);
           } else {
-            this._debug('nop');
+            this._debug("nop");
             // console.log('nop', observerData);
           }
         });
@@ -67,7 +73,7 @@ var MiddleWare = class MiddleWare {
     if (!this._isDataValid(data)) {
       return this;
     }
-    console.log('passed');
+    console.log("passed");
     var observersData = this.checkObservers(data);
     if (!observersData.length) {
       return this;
@@ -75,6 +81,6 @@ var MiddleWare = class MiddleWare {
     this.updateStats(observersData);
     return this;
   }
-}
+};
 
 export default MiddleWare;

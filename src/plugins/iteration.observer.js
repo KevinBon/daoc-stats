@@ -1,9 +1,8 @@
-import AbstractObserver from '../abstracts/abstract.observer.js';
+import AbstractObserver from "../abstracts/abstract.observer.js";
 
-var ObsIteration = class ObsIteration extends AbstractObserver {
-}
+var ObsIteration = class ObsIteration extends AbstractObserver {};
 
 export default new ObsIteration({
-  name: 'iteration',
+  name: "iteration",
   validator: /./,
 });
