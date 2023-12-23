@@ -1,3 +1,5 @@
+import { sendMessage } from "../services/discord";
+
 const predicates = [
   /**
    * @example SH RAID ON ME starting @ xx:40
@@ -47,8 +49,7 @@ class BGObserver {
     for (const predicate of predicates) {
       const sendMsg = predicate(result.groups);
       if (sendMsg) {
-        console.log("newMsg", sendMsg);
-        // sendMessage(sendMsg);
+        sendMessage(sendMsg);
         break;
       }
     }
