@@ -6,7 +6,7 @@ const predicates = [
    */
   function ({ hours, minutes, sender, msg }) {
     // TODO: Use date lib and predict the time of the raid?
-    const msgEstimatedTime = msg.match(/(xx:(?<estimatedTime>\d{2}))/);
+    const msgEstimatedTime = msg.match(/(xx:(?<estimatedTime>\d{2}))/i);
     if (!msgEstimatedTime) {
       return;
     }
