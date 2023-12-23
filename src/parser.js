@@ -1,26 +1,25 @@
 import { existsSync, readFile, createReadStream } from "node:fs";
-import chalk from "chalk";
 import { watch } from "chokidar";
 import { EOL } from "node:os";
 import EventEmitter from "node:events";
+import { makeDebugger } from "./logger.js";
 
 var Parser = class Parser extends EventEmitter {
   constructor(
     filePath,
-    { debug: debug, autoUpdate: autoUpdate, test } = {
+    { autoUpdate: autoUpdate, test } = {
       test: false,
-      debug: false,
       autoUpdate: null,
     },
   ) {
     super();
     this.filePath = filePath;
-    this.debug = debug;
     this.autoUpdate = autoUpdate;
     this.watcher;
     this.autoUpdateTimerFn;
     // Start from the beginning
     this.test = test;
+    this._debug = makeDebugger("Parser");
   }
   _isFileExist() {
     const exist = existsSync(this.filePath);
@@ -43,12 +42,6 @@ var Parser = class Parser extends EventEmitter {
   _initWatcher() {
     this.watcher = watch(this.filePath);
     this.watcher.on("error", (error) => this._debug(`Watcher error: ${error}`));
-    return this;
-  }
-  _debug(msg, type = "log") {
-    if (this.debug) {
-      console[type](chalk.red(`Parser: ${msg}`));
-    }
     return this;
   }
   init() {
