@@ -17,7 +17,7 @@ export async function start(options) {
 
   parser.init();
   parser.start();
-  // parser.on("data", bgObserver.onData);
+  parser.on("data", getObserver().onData);
   parser.on("update", getObserver().onData);
 
   return () => {
