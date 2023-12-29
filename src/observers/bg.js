@@ -1,4 +1,6 @@
 import { sendMessage } from "../services/discord.js";
+import { makeDebugger } from "../logger.js";
+const debug = makeDebugger("BG", "gray");
 
 const predicates = [
   /**
@@ -40,6 +42,7 @@ class BGObserver {
       /\[((?<hours>\d{2}):(?<minutes>\d{2}):(?<seconds>\d{2}))\].(@@\[(?<channel>.*)\]) (?<sender>.*): (?<msg>.*)/,
     );
     if (!result) {
+      debug("Not a channel message", text);
       return;
     }
     if (!result.groups) {
@@ -49,10 +52,12 @@ class BGObserver {
     for (const predicate of predicates) {
       const sendMsg = predicate(result.groups);
       if (sendMsg) {
+        debug("Found a BG", text);
         sendMessage(sendMsg);
         break;
       }
     }
+    debug("Not a BG", text);
   }
 }
 const bgObserver = new BGObserver();

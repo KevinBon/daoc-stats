@@ -18,7 +18,6 @@ export async function start(options) {
   parser.init();
   parser.start();
   parser.on("data", getObserver().onData);
-  parser.on("update", getObserver().onData);
 
   return () => {
     appDebugger("Shutting down");
