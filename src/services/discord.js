@@ -21,7 +21,7 @@ export function getClient() {
   return client;
 }
 
-function appearOnline() {
+export function appearOnline() {
   debug("Online");
   return client.user.setPresence({
     activities: [{ name: "DAOC", type: ActivityType.Watching }],
