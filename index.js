@@ -1,5 +1,5 @@
 import "dotenv/config";
-import "dotenv/config";
+import fs from "node:fs";
 import { createInterface } from "node:readline";
 import commandLineArgs from "command-line-args";
 import { start } from "./src/app.js";
@@ -20,6 +20,9 @@ const options = commandLineArgs(optionDefinitions);
 if (!options.discordToken) {
   throw new Error("discordToken is required");
 }
+
+// Delete chat.log content
+fs.writeFileSync(options.src, "");
 
 const onClose = await start(options);
 
