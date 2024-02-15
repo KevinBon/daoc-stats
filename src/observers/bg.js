@@ -15,7 +15,6 @@ const predicates = [
     if (!msgEstimatedTime.groups || !msgEstimatedTime.groups.estimatedTime) {
       return;
     }
-
     // const expectatedHours = msgEstimatedTime.groups.estimatedTime > minutes ? parseInt(hours) + 1 : parseInt(hours)
     // const expectatedMinutes = msgEstimatedTime.groups.estimatedTime
     return `Raid detected | From : ${sender} | ${msg}`;

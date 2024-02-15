@@ -3,6 +3,7 @@ import { connect, appearOffline } from "./services/discord.js";
 import { setDebug, makeDebugger } from "./logger.js";
 import { getObserver } from "./observers/bg.js";
 import * as chatlog from "./observers/chatlog.js";
+import * as df from "./observers/df.js";
 
 export async function start(options) {
   const appDebugger = makeDebugger("App", "cyan");
@@ -21,6 +22,7 @@ export async function start(options) {
   parser.on("data", (...args) => {
     getObserver().onData(...args);
     chatlog.getObserver().onData(...args);
+    df.getObserver().onData(...args);
   });
 
   return () => {
