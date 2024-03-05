@@ -1,3 +1,4 @@
+import { inspect } from "node:util";
 import { sendMessage } from "../services/discord.js";
 import { makeDebugger } from "../logger.js";
 const debug = makeDebugger("BG", "gray");
@@ -21,12 +22,23 @@ const predicates = [
   },
   function ({ sender, msg }) {
     if (
+      msg.includes("raid") ||
+      msg.includes("bg open") ||
       msg.includes("bg on") ||
-      msg.includes("raid on") ||
       msg.includes("/bg join") ||
       msg.includes("BG join")
     ) {
       return `BG detected | From : ${sender} | ${msg}`;
+    }
+  },
+  function ({ sender, msg, channel }) {
+    if (msg.includes("ML10") || msg.includes("ML 10")) {
+      return `Maybe ML10 raid | From : ${sender} | ${msg}`;
+    }
+  },
+  function ({ sender, msg }) {
+    if (msg.includes("mini")) {
+      return `Maybe Mini's Dragon raid | From : ${sender} | ${msg}`;
     }
   },
 ];
@@ -41,10 +53,14 @@ class BGObserver {
       /\[((?<hours>\d{2}):(?<minutes>\d{2}):(?<seconds>\d{2}))\].(@@\[(?<channel>.*)\]) (?<sender>.*): (?<msg>.*)/,
     );
     if (!result) {
-      debug("Not a channel message", text);
+      // debug("Not a channel message", text);
       return;
     }
-    if (!result.groups) {
+    if (
+      !result.groups ||
+      !["Broadcast", "LFG"].includes(result.groups.channel)
+    ) {
+      // debug("NO GROUPS", text, inspect(result.groups, true, 10));
       return;
     }
 
@@ -56,7 +72,7 @@ class BGObserver {
         break;
       }
     }
-    debug("Not a BG", text);
+    // debug("Not a BG", text);
   }
 }
 const bgObserver = new BGObserver();
