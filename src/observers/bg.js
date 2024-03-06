@@ -36,11 +36,11 @@ const predicates = [
       return `Maybe ML10 raid | From : ${sender} | ${msg}`;
     }
   },
-  function ({ sender, msg }) {
-    if (msg.includes("mini")) {
-      return `Maybe Mini's Dragon raid | From : ${sender} | ${msg}`;
-    }
-  },
+  // function ({ sender, msg }) {
+  //   if (msg.includes("mini")) {
+  //     return `Maybe Mini's Dragon raid | From : ${sender} | ${msg}`;
+  //   }
+  // },
 ];
 
 class BGObserver {

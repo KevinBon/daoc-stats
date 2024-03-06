@@ -12,7 +12,10 @@ class WhisperObserver {
     if (!result || !result.groups) {
       return;
     }
-    // TODO: Implement
+    sendMessage(
+      `🧚 Whisper | From : ${result.groups.sender} | ${result.groups.msg}`,
+      true,
+    );
   }
 }
 const whisperObserver = new WhisperObserver();

@@ -9,11 +9,12 @@ class ServerRestartObserver {
     const result = text.match(
       /\[((?<hours>\d{2}):(?<minutes>\d{2}):(?<seconds>\d{2}))\].(?<msg>Server restart in \d{2}:\d{2}:\d{2}.*)/,
     );
-    if (!result || !result.groups || !result.group.msg) {
+    if (!result || !result.groups) {
       return;
     }
-    sendMessage(`🔁 ${result.group.msg}`);
+    sendMessage(`🔁 ${result.groups.msg}`);
   }
+  w;
 }
 const serverRestartObserver = new ServerRestartObserver();
 

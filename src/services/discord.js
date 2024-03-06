@@ -22,7 +22,7 @@ export function sendMessage(txt, dev = false) {
 }
 
 export function reportError(error) {
-  const errorAsString = JSON.stringify(error);
+  const errorAsString = error.message;
   debug("Report error", error, errorAsString);
   for (const channelId of devChannelIds) {
     client.channels.cache.get(channelId).send(`Error found: ${errorAsString}`);
