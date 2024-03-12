@@ -6,8 +6,8 @@ let client;
 const debug = makeDebugger("Discord", "green");
 
 const channelIds = [
-  // "1187850003096547491", // Clowst server
-  "1187928491237310505", // Vallhala
+  "1187850003096547491", // Clowst server
+  // "1187928491237310505", // Vallhala
 ];
 
 const devChannelIds = [
