@@ -4,7 +4,7 @@
 
 ## Install
 
-1. Download https://pnpm.io/
+1. Download https://pnpm.io/ (tested on v21.7.1)
 2. Clone the repository.
 3. `pnpm install`
 4. Create an `.env` file at the root of the project with as following:

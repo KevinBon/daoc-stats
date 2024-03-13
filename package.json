@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test",
+    "test:watch": "node --test --watch",
     "lint:write": "prettier . --write",
     "prepare": "husky install"
   },

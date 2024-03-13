@@ -22,7 +22,7 @@ if (!options.discordToken) {
 }
 
 // Delete chat.log content
-fs.writeFileSync(options.src, "");
+// fs.writeFileSync(options.src, "");
 
 const onClose = await start(options);
 
